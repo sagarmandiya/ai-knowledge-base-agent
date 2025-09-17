@@ -1,0 +1,17 @@
+streamlit==1.28.1
+requests==2.31.0
+python-dotenv==1.0.0
+langchain
+langchain-community
+langchain-core
+chromadb
+sentence-transformers
+huggingface-hub
+beautifulsoup4
+pypdf
+langchain-perplexity
+python-multipart
+tiktoken
+pydantic
+pydantic-settings
+python-docx
