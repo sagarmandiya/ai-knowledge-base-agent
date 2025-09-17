@@ -8,7 +8,7 @@ import requests
 from io import BytesIO
 
 # LangChain imports
-from langchain_community.vectorstores import FAISS
+from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_perplexity import ChatPerplexity
 from langchain_core.documents import Document
@@ -135,10 +135,11 @@ def create_vectorstore(documents: List[Document]):
         )
         splits = text_splitter.split_documents(documents)
         
-        # Create vectorstore using FAISS
-        vectorstore = FAISS.from_documents(
+        # Create vectorstore
+        vectorstore = Chroma.from_documents(
             documents=splits,
-            embedding=st.session_state.embeddings
+            embedding=st.session_state.embeddings,
+            persist_directory="./chroma_db"
         )
         
         # Create retriever
@@ -279,6 +280,11 @@ def reset_database():
     st.session_state.retriever = None
     st.session_state.rag_chain = None
     st.session_state.messages = []
+    
+    # Remove chroma database directory
+    import shutil
+    if os.path.exists("./chroma_db"):
+        shutil.rmtree("./chroma_db")
 
 # Main header
 st.markdown('<h1 class="main-header">🤖 AI Knowledge Base Agent</h1>', unsafe_allow_html=True)
@@ -289,7 +295,7 @@ if not initialize_components():
 
 # Sidebar for document management
 with st.sidebar:
-    st.markdown("## �� Document Management")
+    st.markdown("## 📁 Document Management")
     
     # Document count
     doc_count = len(st.session_state.documents)
@@ -366,7 +372,7 @@ if doc_count == 0:
     - 📖 Markdown files (.md)
     
     **Or add web content:**
-    - �� Any publicly accessible web page
+    - 🌐 Any publicly accessible web page
     """)
     st.markdown('</div>', unsafe_allow_html=True)
     

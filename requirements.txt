@@ -4,7 +4,7 @@ python-dotenv==1.0.0
 langchain
 langchain-community
 langchain-core
-chromadb==0.4.15
+faiss-cpu
 sentence-transformers
 huggingface-hub
 beautifulsoup4
